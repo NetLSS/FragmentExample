@@ -17,7 +17,8 @@ class MainActivity : FragmentActivity(), ToolbarFragment.ToolbarListener {
         setContentView(binding.root)
     }
 
-    override fun onButtonClick(position: Int, text: String) {
-        Toast.makeText(this, "onButtonClick($position: Int, $text: String)", Toast.LENGTH_SHORT).show()
+    override fun onButtonClick(fontSize: Int, text: String) {
+        val textFragment = supportFragmentManager.findFragmentById(binding.textFragment.id) as TextFragment
+        textFragment.changeTextProperties(fontSize, text)
     }
 }
