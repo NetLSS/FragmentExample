@@ -1,36 +1,47 @@
 package com.lilcode.example.fragmentexample
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import com.lilcode.example.fragmentexample.databinding.FragmentToolbarBinding
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import java.lang.ClassCastException
 
 /**
  * A simple [Fragment] subclass.
  * Use the [ToolbarFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ToolbarFragment : Fragment() {
+class ToolbarFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
     private var _binding: FragmentToolbarBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    var seekValue = 10
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    var activityCallback: ToolbarFragment.ToolbarListener? = null
+
+    interface ToolbarListener {
+        fun onButtonClick(position: Int, text: String)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            activityCallback = context as ToolbarListener
+
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$context must implement ToolbarListener")
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.seekBar1.setOnSeekBarChangeListener(this)
+        binding.button1.setOnClickListener { v: View -> buttonClicked(v) }
     }
 
     override fun onCreateView(
@@ -47,18 +58,24 @@ class ToolbarFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment ToolbarFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ToolbarFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() =
+            ToolbarFragment()
+    }
+
+    private fun buttonClicked(view: View) {
+        activityCallback?.onButtonClick(seekValue, binding.editText1.text.toString())
+    }
+
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        seekValue = progress
+    }
+
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+    }
+
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
     }
 }
