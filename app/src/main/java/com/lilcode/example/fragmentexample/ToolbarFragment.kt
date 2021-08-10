@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.lilcode.example.fragmentexample.databinding.FragmentToolbarBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,6 +18,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ToolbarFragment : Fragment() {
+    private var _binding: FragmentToolbarBinding? = null
+    private val binding get() = requireNotNull(_binding)
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -34,7 +38,8 @@ class ToolbarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_toolbar, container, false)
+        _binding = FragmentToolbarBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     companion object {
