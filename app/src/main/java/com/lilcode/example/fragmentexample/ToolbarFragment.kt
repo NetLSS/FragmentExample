@@ -15,7 +15,7 @@ import java.lang.ClassCastException
  * Use the [ToolbarFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ToolbarFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
+class ToolbarFragment : Fragment() {
     private var _binding: FragmentToolbarBinding? = null
     private val binding get() = requireNotNull(_binding)
 
@@ -40,7 +40,18 @@ class ToolbarFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.seekBar1.setOnSeekBarChangeListener(this)
+        binding.seekBar1.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                seekValue = progress
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
         binding.button1.setOnClickListener { v: View -> buttonClicked(v) }
     }
 
@@ -69,13 +80,4 @@ class ToolbarFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
         activityCallback?.onButtonClick(seekValue, binding.editText1.text.toString())
     }
 
-    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        seekValue = progress
-    }
-
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-    }
-
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-    }
 }
