@@ -23,4 +23,6 @@ class MainActivity : FragmentActivity(), ToolbarFragment.ToolbarListener {
         // 액티비티에서 프래그먼트의 참조를 얻고 해당 프레그먼트의 public 함수를 호출할 수 있음
         textFragment.changeTextProperties(fontSize, text)
     }
+
+    // 프레그먼트 끼리는 직접적으로 통신하지 않기 때문에 모든 통신은 프래그먼트를 포함하고있는 액티비티를 끼고 이루어져야한다. 그래서 위와 같은 매커니즘 사용
 }
